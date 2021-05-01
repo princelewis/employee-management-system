@@ -1,0 +1,1 @@
+INSERT IGNORE INTO last_id(id,last_id) VALUE(1,0);
