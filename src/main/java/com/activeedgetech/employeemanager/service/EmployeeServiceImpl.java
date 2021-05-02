@@ -5,7 +5,7 @@ import com.activeedgetech.employeemanager.dto.mapper.EmployeeMapper;
 import com.activeedgetech.employeemanager.dto.response.AppResponse;
 import com.activeedgetech.employeemanager.model.Employee;
 import com.activeedgetech.employeemanager.repository.EmployeeRepository;
-import com.activeedgetech.employeemanager.util.AppConstants;
+import com.activeedgetech.employeemanager.util.AppConstant;
 import com.activeedgetech.employeemanager.util.UniqueIdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService{
      * Save an employee
      *
      * @param request the employee record to save
-     * @return the saved employee record
+     * @return the response object which has a response message and the saved employee record
      */
     @Override
     public AppResponse createEmployee(EmployeePayload request) {
@@ -42,15 +42,32 @@ public class EmployeeServiceImpl implements EmployeeService{
         employee = employeeRepository.save(employee);
         EmployeePayload employeePayload = employeeMapper.toDto(employee);
 
+        //Create the response object
         AppResponse response = new AppResponse();
-        response.setMessage(AppConstants.EMPLOYEE_CREATION_SUCCESS_MESSAGE);
+        response.setMessage(AppConstant.EMPLOYEE_CREATION_SUCCESS_MESSAGE);
         response.setEmployees(employeePayload);
 
         return response;
     }
 
+    /**
+     * Update an employee record
+     *
+     * @param request the employee information to be updated with
+     * @return the response object which has a response message and the saved employee record
+     */
     @Override
     public AppResponse updateEmployee(EmployeePayload request) {
-        return null;
+
+        log.info("Updating an already existing employee record");
+
+        Employee employee = employeeMapper.toEntity(request);
+        employee = employeeRepository.save(employee);
+        EmployeePayload employeePayload = employeeMapper.toDto(employee);
+
+        AppResponse response = new AppResponse();
+        response.setMessage(AppConstant.EMPLOYEE_UPDATE_SUCCESS_MESSAGE);
+        response.setEmployees(employeePayload);
+        return response;
     }
 }
