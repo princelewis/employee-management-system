@@ -19,7 +19,7 @@ import java.net.URISyntaxException;
  */
 @RestController
 @Slf4j
-@RequestMapping("/employee")
+@RequestMapping("api/employee")
 public class EmployeeController {
 
     @Autowired
@@ -49,5 +49,17 @@ public class EmployeeController {
         return ResponseEntity.created(new URI("/employee/" + response.getEmployees().get(0).getEmployeeId()))
                 .body(response);
 
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<AppResponse> updateEmployee(@Valid @RequestBody EmployeePayload request) {
+         log.info("REST request to update Employee : {}", request);
+
+         if (request.getEmployeeId() == null) {
+             throw new BadRequestException("To update an employee you need to add an ID");
+         }
+
+         AppResponse response = employeeService.updateEmployee(request);
+        return ResponseEntity.ok().body(response);
     }
 }
