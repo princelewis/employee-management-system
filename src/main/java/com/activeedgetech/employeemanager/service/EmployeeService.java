@@ -4,6 +4,9 @@ import com.activeedgetech.employeemanager.dto.EmployeePayload;
 import com.activeedgetech.employeemanager.dto.response.AppResponse;
 
 public interface EmployeeService {
-    AppResponse createEmployee(EmployeePayload request);
-    AppResponse updateEmployee(EmployeePayload request);
+    EmployeePayload createEmployee(EmployeePayload request);
+    EmployeePayload updateEmployee(EmployeePayload request);
+    AppResponse findAll();
+    EmployeePayload findOne(String id);
+    void delete(String id);
 }
