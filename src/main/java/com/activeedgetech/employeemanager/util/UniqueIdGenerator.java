@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
@@ -29,6 +30,7 @@ public class UniqueIdGenerator {
      * Generate a unique Id for employees
      * @return the generated employee ID
      */
+    @Transactional
     public String generateId() {
         Optional<LastId> optionalLastId = lastIdRepository.findById(1L);
 

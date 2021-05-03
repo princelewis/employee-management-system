@@ -28,4 +28,5 @@ public class EmployeePayload implements Serializable {
     @JsonProperty("join_date")
     @NotNull(message = "join date is mandatory")
     private LocalDate joinDate;
+
 }
