@@ -34,18 +34,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationFilter();
     }
 
-//    @Override
-//    public void configure(WebSecurity web) {
-//        web.ignoring()
-//                .antMatchers(HttpMethod.OPTIONS, "/**")
-//                .antMatchers("/app/**/*.{js,html}")
-//                .antMatchers("/i18n/**")
-//                .antMatchers("/content/**")
-//                .antMatchers("/h2-console/**")
-//                .antMatchers("/swagger-ui/index.html")
-//                .antMatchers("/swagger-ui.html")
-//                .antMatchers("/test/**");
-//    }
 
     @Override
     public void configure(WebSecurity web) {
