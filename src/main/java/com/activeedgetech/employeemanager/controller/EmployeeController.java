@@ -37,29 +37,80 @@ public class EmployeeController {
      * @throws  URISyntaxException if the location URI syntax is incorrect.
      */
     @PostMapping("/create")
-    public ResponseEntity<AppResponse> createEmployee(@Valid @RequestBody EmployeePayload request) throws URISyntaxException {
+    public ResponseEntity<EmployeePayload> createEmployee(@Valid @RequestBody EmployeePayload request) throws URISyntaxException {
 
         log.debug("REST request to save Employee : {}", request);
         if (request.getEmployeeId() != null) {
             throw new BadRequestException("A new Employee cannot already have an ID");
         }
 
-        AppResponse response = employeeService.createEmployee(request);
+        EmployeePayload response = employeeService.createEmployee(request);
 
-        return ResponseEntity.created(new URI("/employee/" + response.getEmployees().get(0).getEmployeeId()))
+        return ResponseEntity.created(new URI("/employee/" + response.getEmployeeId()))
                 .body(response);
 
     }
 
+    /**
+     * {@code PUT /update} : update employee data
+     *
+     * @param request the employee payload to update with
+     * @return {@link ResponseEntity} with status {@code 200 (OK)}
+     */
+
     @PutMapping("/update")
-    public ResponseEntity<AppResponse> updateEmployee(@Valid @RequestBody EmployeePayload request) {
+    public ResponseEntity<EmployeePayload> updateEmployee(@Valid @RequestBody EmployeePayload request) {
          log.info("REST request to update Employee : {}", request);
 
          if (request.getEmployeeId() == null) {
              throw new BadRequestException("To update an employee you need to add an ID");
          }
 
-         AppResponse response = employeeService.updateEmployee(request);
+         EmployeePayload response = employeeService.updateEmployee(request);
         return ResponseEntity.ok().body(response);
+    }
+
+
+    /**
+     * {@code GET /fetchAll} : fetch all the stored employee
+     *
+     * @return {@link ResponseEntity} with status {@code 200 (OK)}
+     */
+    @GetMapping("/fetchAll")
+    public ResponseEntity<AppResponse> fetchAll() {
+        log.info("REST request to fetch all employee details");
+
+        AppResponse response = employeeService.findAll();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * {@code GET /fetch/:id} : fetch an employee with "id"
+     *
+     * @param id the id of the employee to fetch
+     * @return {@link ResponseEntity} with status {@code 200 (OK)}.
+     */
+    @GetMapping("/fetch/{id}")
+    public ResponseEntity<EmployeePayload> fetchOne(@PathVariable String id){
+        log.info("REST request to fetch one employee record");
+
+        EmployeePayload response = employeeService.findOne(id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * {@code DELETE /delete/:id} : delete the "id" employee.
+     *
+     *
+     * @param id the id of the employee to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (No_CONTENT}.
+     */
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        log.debug("REST request to delete employee with id : {}", id);
+
+        employeeService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
