@@ -18,3 +18,12 @@ After the application is up an running, you may call the below endpoint on your 
 http://localhost:8023/swagger-ui.html
 ```
 to run a test with the expected request payloads.
+
+## Authentication
+All the CRUD endpoints are secured. To access any of the CRUD endpoints, you need to first generate a [JWT](https://jwt.io/) 
+To generate token, make a `GET` request to:
+```
+http://localhost:8023/auth/getToken
+```
+Set the generated token in th request header whenever you need to make a call to any of the CRUD handling endpoints
+The token type is `Bearer Token`
